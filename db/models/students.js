@@ -8,7 +8,7 @@ var Students = db.define('students', {
         allowNull: false
     },
     phone: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.TEXT,
         unique: true
     },
     email: {

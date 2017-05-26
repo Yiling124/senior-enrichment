@@ -7,8 +7,7 @@ const Campuses = (props) => {
         <div>
             <div>{campus.name} Campus</div>
             <div>{campus.address}</div>
-            <div>{campus.phone}</div>
-            <div>{campus.email}</div>
+
             <students />
         </div>
     );

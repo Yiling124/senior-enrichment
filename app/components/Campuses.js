@@ -10,7 +10,9 @@ const Campuses = (props) => {
 			    return (
                     <div className="col-xs-4" key={campus.id}>
                         <a href="#" onClick = {() => selectCampus(campus)} >{campus.name} Campus</a>
-                    </div>)
+                    </div>
+
+                    )
             })
         }
         </div>
@@ -18,6 +20,8 @@ const Campuses = (props) => {
 }
 
 export default Campuses
+
+
 
 
 

@@ -7,11 +7,13 @@ import Navbar from '../components/Navbar';
 import Student from '../components/Student';
 
 
+
 export default class Home extends Component {
     constructor() {
         super();
         this.state = {
             studentPage: false,
+            addstudentPage: false,
             campuses: [],
             students: [],
             selectedCampus: {},
@@ -22,6 +24,7 @@ export default class Home extends Component {
         this.selectAllStudents = this.selectAllStudents.bind(this);
         this.selectStudent = this.selectStudent.bind(this);
         this.deleteStudent = this.deleteStudent.bind(this);
+        this.addstudentPage = this.addstudentPage.bind(this);
     }
 
     componentDidMount() {
@@ -45,13 +48,13 @@ export default class Home extends Component {
                 console.log("selectedCampus", this.state.selectedCampus);
             })
         })
-        .then(campusId => {
-            axios.get(`/students/${campusId}`)
-                .then(res =>{
-                    let studentList = res.data;
+        // .then(campusId => {
+        //     axios.get(`/students/${campusId}`)
+        //         .then(res =>{
+        //             let studentList = res.data;
 
-                })
-        })
+        //         })
+        // })
 	}
 
 
@@ -98,7 +101,14 @@ export default class Home extends Component {
                 console.log("*****selectedStudent", this.state.selectedStudent);
             })
         })
+    }
 
+    addstudentPage(){
+        this.setState({
+            addstudentPageSwitch: true,
+            studentPage: true,
+            selectedStudent: {}
+        }, function(){console.log('PageSwitch Status changed', this.state.addstudentPageSwitch)})
     }
 
 
@@ -120,10 +130,13 @@ export default class Home extends Component {
                                     <Student student = {this.state.selectedStudent}/>
                                     :
                                     <Students
+                                        campuses = {this.state.campuses}
                                         students = {this.state.students}
                                         selectAllStudents = {this.selectAllStudents}
                                         selectStudent = {this.selectStudent}
                                         deleteStudent = {this.deleteStudent}
+                                        addstudentPageSwitch = {this.state.addstudentPageSwitch}
+                                        addstudentPage = {this.addstudentPage}
                                     />
                                 }
                             </div>
