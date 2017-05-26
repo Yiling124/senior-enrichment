@@ -8,6 +8,11 @@ const Students = (props) => {
     const deleteStudent = props.deleteStudent
     const addstudentPageSwitch = props.addstudentPageSwitch
     const addstudentPage = props.addstudentPage
+    const handleSubmit = props.handleSubmit
+    const handleNameChange = props.handleNameChange
+    const handleEmailChange = props.handleEmailChange
+    const handlePhoneChange = props.handlePhoneChange
+    const handleCampusChange = props.handleCampusChange
 
 
     if (!addstudentPageSwitch){
@@ -18,7 +23,7 @@ const Students = (props) => {
                     students.map((student, idx) => {
                         return (
                             <div>
-                                <div className="col-xs-4" key = {student.id}>
+                                <div className="col-xs-5" key = {student.id}>
                                     <a href="#" onClick = {() => selectStudent(student)} >
                                         {student.name}
                                     </a>
@@ -34,10 +39,19 @@ const Students = (props) => {
 
         return (
         <div>
-            <AddStudent campuses = {campuses}/>
+            <AddStudent
+            campuses = {campuses}
+            handleSubmit = {handleSubmit}
+            handleNameChange = {handleNameChange}
+            handlePhoneChange = {handlePhoneChange}
+            handleEmailChange = {handleEmailChange}
+            handleCampusChange = {handleCampusChange}
+            />
         </div>
         )
     }
 }
 
 export default Students
+
+

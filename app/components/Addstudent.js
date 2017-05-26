@@ -2,30 +2,35 @@ import React from 'react';
 
 const AddStudent = (props) => {
     const campuses = props.campuses
+    const handleSubmit = props.handleSubmit
+    const handleNameChange = props.handleNameChange
+    const handlePhoneChange = props.handlePhoneChange
+    const handleEmailChange = props.handleEmailChange
+    const handleCampusChange = props.handleCampusChange
 
     return (
         <div>
             <h3>Add Student</h3>
 
-            <form>
+            <form onSubmit = {handleSubmit}>
 
                 <div className="form-group">
                     <label >Name</label>
-                    <input type="text" className="form-control"  placeholder="Example input" />
+                    <input onChange = {handleNameChange} type="text" className="form-control"  placeholder="Example input" />
                 </div>
 
                 <div className="form-group">
                     <label >Phone</label>
-                    <input type="text" className="form-control"  placeholder="Example input" />
+                    <input onChange = {handlePhoneChange} type="text" className="form-control"  placeholder="Example input" />
                 </div>
 
                 <div className="form-group">
                     <label>Email</label>
-                    <input type="text" className="form-control"  placeholder="Example input" />
+                    <input onChange = {handleEmailChange} type="text" className="form-control"  placeholder="Example input" />
                 </div>
 
 
-                <select className="selectpicker">
+                <select onChange = {handleCampusChange} className="selectpicker">
 
                     {
                         campuses.map((campus) => {
@@ -38,10 +43,7 @@ const AddStudent = (props) => {
                     }
 
                 </select>
-
-                <button type="button" className="btn btn-success">Submit</button>
-
-
+                <input type="submit" value="Submit" />
             </form>
 
         </div>

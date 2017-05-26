@@ -31,20 +31,33 @@ router.get('/:id', function (req, res, next) {
 
 // POST - new student
 router.post('/', function (req, res, next) {
-
-Students.findOrCreate({
+    console.log('come hereeeeeeeee')
+    Students.create({
         where: {
-            name: req.body.name
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email
         }
     })
-    .spread(function (student, createdPageBool) {
-        return student.update(req.body)
-            .then(function (student) {
-                return student.setAuthor(req.body.campusId);
-            });
+    .then(function (newstudent) {
+        console.log('test One ')
+        res.send(newstudent)
+        // if (req.body.campus){
+        //     console.log('test tWO')
+        //     return Campuses.findOne({
+        //     where: {
+        //         name: req.body.campus
+        //     }
+        // })
+        // .then(function(campus){
+        //     if (campus){
+        //         console.log('new sttttudenetttt', newstudent)
+        //       return newstudent.setCampus(campus)
+        //     }
+        // })
+        // .catch(next);
+        // }
     })
-    .catch(next);
-
 });
 
 

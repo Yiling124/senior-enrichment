@@ -8,7 +8,7 @@ module.exports = router;
 
 
 
-// GET - all campuses - $$
+// GET - all campuses
 router.get('/', function (req, res, next) {
     Campuses.findAll({})
         .then(function (campuses) {
@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
         .catch(next);
 });
 
-//GET - campus by id - $$
+//GET - campus by id
 router.get('/:id', function (req, res, next) {
     Campuses.findOne({
             where: {

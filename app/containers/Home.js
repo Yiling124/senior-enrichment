@@ -12,12 +12,17 @@ export default class Home extends Component {
     constructor() {
         super();
         this.state = {
+            addstudentPageSwitch:false,
             studentPage: false,
             addstudentPage: false,
             campuses: [],
             students: [],
             selectedCampus: {},
-            selectedStudent: {}
+            selectedStudent: {},
+            nameInputValue: "",
+            phoneInputValue: "",
+            emailInputValue: "",
+            campusInputValue: ""
         }
         this.selectCampus = this.selectCampus.bind(this);
         this.unselectCampus = this.unselectCampus.bind(this);
@@ -25,6 +30,11 @@ export default class Home extends Component {
         this.selectStudent = this.selectStudent.bind(this);
         this.deleteStudent = this.deleteStudent.bind(this);
         this.addstudentPage = this.addstudentPage.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handlePhoneChange = this.handlePhoneChange.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handleCampusChange = this.handleCampusChange.bind(this);
     }
 
     componentDidMount() {
@@ -57,8 +67,6 @@ export default class Home extends Component {
         // })
 	}
 
-
-
     unselectCampus(){
         this.setState(
             { selectedCampus: {},
@@ -69,6 +77,7 @@ export default class Home extends Component {
 
     selectAllStudents(){
         this.setState({
+            addstudentPageSwitch: false,
             studentPage: true,
             selectedStudent: {}
         });
@@ -111,6 +120,60 @@ export default class Home extends Component {
         }, function(){console.log('PageSwitch Status changed', this.state.addstudentPageSwitch)})
     }
 
+    handleNameChange(e){
+        console.log("Name added", e.target.value)
+        const nameValue = e.target.value;
+        this.setState({
+        nameInputValue: nameValue
+        })
+    }
+
+    handlePhoneChange(e){
+        console.log("Phone added", e.target.value)
+        const phoneValue = e.target.value;
+        this.setState({
+        phoneInputValue: phoneValue
+        })
+    }
+
+    handleEmailChange(e){
+        console.log("Email added", e.target.value)
+        const emailValue = e.target.value;
+        this.setState({
+        emailInputValue: emailValue
+        })
+    }
+
+    handleCampusChange(e){
+        console.log("Campus added", e.target.value)
+        const campusValue = e.target.value;
+        this.setState({
+        campusInputValue: campusValue
+        })
+    }
+
+    handleSubmit(e){
+        console.log("submitttttttttt", e.target.value);
+        e.preventDefault();
+
+        axios.post('/students', {
+            name: this.state.nameValue,
+            phone: this.state.phoneValue,
+            email: this.state.emailValue,
+            campus: this.state.campusValue
+        })
+        .then(function(student){
+            console.log("one new studenttttttt", student)
+            this.setState({
+                campusValue: '',
+                emailValue: '',
+                nameValue: '',
+                phoneValue: ''
+            })
+        })
+        return student;
+    }
+
 
     render () {
 		return (
@@ -137,6 +200,11 @@ export default class Home extends Component {
                                         deleteStudent = {this.deleteStudent}
                                         addstudentPageSwitch = {this.state.addstudentPageSwitch}
                                         addstudentPage = {this.addstudentPage}
+                                        handleSubmit = {this.handleSubmit}
+                                        handleNameChange = {this.handleNameChange}
+                                        handleEmailChange = {this.handleEmailChange}
+                                        handlePhoneChange = {this.handlePhoneChange}
+                                        handleCampusChange = {this.handleCampusChange}
                                     />
                                 }
                             </div>
