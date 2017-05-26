@@ -5,9 +5,10 @@ const Student = (props) => {
 
     return (
         <div>
-            <div>{student.name} </div>
-            <div>{student.phone}</div>
-            <div>{student.email}</div>
+            <div>Student Name: {student.name} </div>
+            <div>Student Phone: {student.phone}</div>
+            <div>Student Email: {student.email}</div>
+            <div>Campus: {student.campus}</div>
         </div>
     );
 }

@@ -13,10 +13,14 @@ const Students = (props) => {
     const handleEmailChange = props.handleEmailChange
     const handlePhoneChange = props.handlePhoneChange
     const handleCampusChange = props.handleCampusChange
+    const nameInputValue = props.nameInputValue
+    const emailInputValue = props.emailInputValue
+    const campusInputValue = props.campusInputValue
+    const phoneInputValue = props.phoneInputValue
 
 
 
-    if (!addstudentPageSwitch){
+    if (addstudentPageSwitch === false){
     return (
         <div>
             <button onClick={addstudentPage}  data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
@@ -36,8 +40,7 @@ const Students = (props) => {
                 }</div>
         </div>
     )}
-    else {
-
+    else if(addstudentPageSwitch === true) {
         return (
         <div>
             <AddStudent
@@ -47,6 +50,10 @@ const Students = (props) => {
             handlePhoneChange = {handlePhoneChange}
             handleEmailChange = {handleEmailChange}
             handleCampusChange = {handleCampusChange}
+            nameInputValue = {nameInputValue}
+            emailInputValue = {emailInputValue}
+            campusInputValue = {campusInputValue}
+            phoneInputValue = {phoneInputValue}
             />
         </div>
         )

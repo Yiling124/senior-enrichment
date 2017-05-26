@@ -7,10 +7,14 @@ const AddStudent = (props) => {
     const handlePhoneChange = props.handlePhoneChange
     const handleEmailChange = props.handleEmailChange
     const handleCampusChange = props.handleCampusChange
+    const nameInputValue = props.nameInputValue
+    const emailInputValue = props.emailInputValue
+    const campusInputValue = props.campusInputValue
+    const phoneInputValue = props.phoneInputValue
 
     return (
         <div>
-            <h3>Add Student</h3>
+            <h3>Add Student - Update Student</h3>
 
             <form onSubmit = {handleSubmit}>
 

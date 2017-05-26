@@ -7,7 +7,7 @@ var Campuses = models.Campuses;
 module.exports = router;
 
 
-// GET - all students - $$
+// GET - all students
 router.get('/', function (req, res, next) {
     Students.findAll({})
         .then(function (students) {
@@ -16,7 +16,7 @@ router.get('/', function (req, res, next) {
         .catch(next);
 });
 
-//GET - student by id - $$
+//GET - student by id
 router.get('/:id', function (req, res, next) {
     Students.findOne({
             where: {
@@ -29,34 +29,39 @@ router.get('/:id', function (req, res, next) {
         .catch(next);
 })
 
-// POST - new student
-router.post('/', function (req, res, next) {
-    console.log('come hereeeeeeeee')
-    Students.create({
+//GET - students by campusId
+router.get('/campus/:campusId',function(req, res, next){
+    console.log('come here ')
+    Students.findAll({
         where: {
-            name: req.body.name,
-            phone: req.body.phone,
-            email: req.body.email
+            campusId: req.params.campusId
         }
     })
+    .then(function(students){
+        res.send(students)
+    })
+    .catch(next)
+})
+
+// POST - new student
+router.post('/', function (req, res, next) {
+    Students.create({
+            name: req.body.name,
+            phone: req.body.phone,
+            email: req.body.email,
+            campus: req.body.campus
+        })
     .then(function (newstudent) {
-        console.log('test One ')
-        res.send(newstudent)
-        // if (req.body.campus){
-        //     console.log('test tWO')
-        //     return Campuses.findOne({
-        //     where: {
-        //         name: req.body.campus
-        //     }
-        // })
-        // .then(function(campus){
-        //     if (campus){
-        //         console.log('new sttttudenetttt', newstudent)
-        //       return newstudent.setCampus(campus)
-        //     }
-        // })
-        // .catch(next);
-        // }
+        return Campuses.findOne({
+            where: {
+            name: req.body.campus
+        }})
+        .then(function(campus){
+            return newstudent.setCampus(campus)
+        })
+        .then(function(student){
+            res.send(student)
+        })
     })
 });
 

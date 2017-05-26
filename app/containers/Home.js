@@ -13,7 +13,7 @@ export default class Home extends Component {
     constructor() {
         super();
         this.state = {
-            addstudentPageSwitch:false,
+            addstudentPageSwitch: false,
             studentPage: false,
             addstudentPage: false,
             campuses: [],
@@ -38,6 +38,7 @@ export default class Home extends Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleCampusChange = this.handleCampusChange.bind(this);
         this.deleteCampus = this.deleteCampus.bind(this);
+        this.StudentsAtCampus = this.StudentsAtCampus.bind(this);
     }
 
     componentDidMount() {
@@ -52,20 +53,28 @@ export default class Home extends Component {
 
 
     selectCampus(id){
-        let findCampus = axios.get(`/campuses/${id}`);
-        let findStudentsForOneCamp = axios.get('/students',{campusId:id});
-
-        findCampus
-            .then(campus => {
-                findStudentsForOneCamp
+        axios.get(`/campuses/${id}`)
+            .then(res => res.data)
+            .then(campus =>{
+                axios.get(`/students/campus/${id}`)
+                .then(res => res.data)
                     .then(students => {
                         this.setState({
-                        studentPage: true,
+                        studentPage: false,
                         studentsForOneCamp: students,
                         selectedCampus: campus
+                    }, function(){
+                        console.log('studengson camp')
                     })
                 })
             })
+    }
+
+    StudentsAtCampus(){
+        this.setState({
+            studentPage: true,
+            selectedStudent: {},
+        })
     }
 
 
@@ -84,29 +93,37 @@ export default class Home extends Component {
             selectedStudent: {}
         });
         return (this.state.students);
-
     }
 
 
     selectStudent(id){
-        let getOneStudent = axios.get(`/students/${id}`)
-        let getCampusName = axios.get(`campuses/`)
-
         axios.get(`/students/${id}`)
-        	.then(res => {
-				let student = res.data;
-                this.setState({selectedStudent: student},
-                function () {
-                console.log("selectedCampus");
+            .then(res => res.data)
+            .then(student => {
+                axios.get(`/campuses/${student.campusId}`)
+                .then(res => res.data)
+
+                .then(campus => {
+                    student['campus'] = campus.name;
+                    this.setState({
+                       selectedStudent: student
+                    })
+                })
+                .catch()
             })
-        })
+
     }
+
 
     deleteCampus(id){
         axios.delete(`/campuses/${id}`)
 			.then(()=> {
-                console.log('done')
-            });
+                this.setState({
+                selectedCampus: {},
+                studentPage: false
+            },
+            function(){console.log('resetted')});
+        })
     }
 
 
@@ -117,17 +134,9 @@ export default class Home extends Component {
                 addstudentPageSwitch: false,
                 studentPage: true,
                 selectedStudent: {}
-            });
+            }, function(){console.log('resetted')});
         })
     }
-        // axios.get(`/students/${studentId}`)
-		// 	.then(res => {
-		// 		let student = res.data;
-        //         this.setState({selectedStudent: student},
-        //         function () {
-        //         console.log("*****selectedStudent", this.state.selectedStudent);
-        //     })
-        // })
 
 
     addstudentPage(){
@@ -135,61 +144,57 @@ export default class Home extends Component {
             addstudentPageSwitch: true,
             studentPage: true,
             selectedStudent: {}
-        }, function(){console.log('PageSwitch Status changed', this.state.addstudentPageSwitch)})
+        }, function(){console.log('Switchin to Add student Page')})
     }
 
     handleNameChange(e){
-        console.log("Name added", e.target.value)
-        const nameValue = e.target.value;
         this.setState({
-        nameInputValue: nameValue
+            nameInputValue: e.target.value
+        }, function(){
+            console.log('NameInputchanged')
         })
     }
 
     handlePhoneChange(e){
-        console.log("Phone added", e.target.value)
-        const phoneValue = e.target.value;
-        this.setState({
-        phoneInputValue: phoneValue
+       this.setState({
+            phoneInputValue: e.target.value
+        }, function(){
+            console.log('phoneInputchanged')
         })
     }
 
     handleEmailChange(e){
-        console.log("Email added", e.target.value)
-        const emailValue = e.target.value;
         this.setState({
-        emailInputValue: emailValue
+            emailInputValue: e.target.value
+        }, function(){
+            console.log('emailInputchanged')
         })
     }
 
     handleCampusChange(e){
-        console.log("Campus added", e.target.value)
-        const campusValue = e.target.value;
         this.setState({
-        campusInputValue: campusValue
+            campusInputValue: e.target.value
+        }, function(){
+            console.log('campusInputchanged')
         })
     }
 
     handleSubmit(e){
-        console.log("submitttttttttt", e.target.value);
-        e.preventDefault();
 
         axios.post('/students', {
-            name: this.state.nameValue,
-            phone: this.state.phoneValue,
-            email: this.state.emailValue,
-            campus: this.state.campusValue
+            name: this.state.nameInputValue,
+            phone: this.state.phoneInputValue,
+            email: this.state.emailInputValue,
+            campus: this.state.campusInputValue
         })
-        .then(function(student){
-            console.log("one new studenttttttt", student)
-            this.setState({
-                campusValue: '',
-                emailValue: '',
-                nameValue: '',
-                phoneValue: ''
-            })
+        .then(function(){
+             this.setState({
+                campusInputValue: '',
+                emailInputValue: '',
+                nameInputValue: '',
+                phoneInputValue: ''
+            }, function(){console.log('resetted')})
         })
-        return student;
     }
 
 
@@ -208,7 +213,9 @@ export default class Home extends Component {
 
                             <div>
                                 {this.state.selectedStudent.id ?
-                                    <Student student = {this.state.selectedStudent}/>
+                                    <Student
+                                        student = {this.state.selectedStudent}
+                                    />
                                     :
                                     <Students
                                         campuses = {this.state.campuses}
@@ -223,6 +230,12 @@ export default class Home extends Component {
                                         handleEmailChange = {this.handleEmailChange}
                                         handlePhoneChange = {this.handlePhoneChange}
                                         handleCampusChange = {this.handleCampusChange}
+                                        nameInputValue = {this.state.nameInputValue}
+                                        phoneInputValue = {this.phoneInputValue}
+                                        emailInputValue = {this.emailInputValue}
+                                        campusInputValue = {this.campusInputValue}
+                                        campus = {this.state.selectedCampus}
+                                        studentsForOneCamp = {this.state.studentsForOneCamp}
                                     />
                                 }
                             </div>
@@ -231,8 +244,14 @@ export default class Home extends Component {
 
                             <div>
                                 {this.state.selectedCampus.id ?
-                                    <Campus campus = {this.state.selectedCampus}
-                                            students = {this.state.studentsForOneCamp}
+                                    < Campus
+                                        selectedCampus = {this.state.selectedCampus}
+                                        studentsForOneCamp = {this.state.studentsForOneCamp}
+                                        StudentsAtCampus = {this.StudentsAtCampus}
+                                        studentPage = {this.state.studentPage}
+                                        selectedStudent = {this.state.selectedStudent}
+                                        selectStudent ={this.selectStudent}
+
                                     />
                                 :
                                     <Campuses
