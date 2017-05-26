@@ -9,7 +9,7 @@ const Campuses = (props) => {
             campuses.map((campus, idx) => {
 			    return (
                     <div className="col-xs-4" key={campus.id}>
-                        <a href="#" onClick = {() => selectCampus(campus)} >{campus.name} Campus</a>
+                        <a href="#" onClick = {() => selectCampus(campus.id)} >{campus.name} Campus</a>
                     </div>
 
                     )

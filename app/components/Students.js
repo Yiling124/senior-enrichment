@@ -20,20 +20,18 @@ const Students = (props) => {
         <div>
             <button onClick={addstudentPage}  data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
                 <div>{
-                    students.map((student, idx) => {
+                    students.map((student) => {
                         return (
                             <div>
-                                <div className="col-xs-5" key = {student.id}>
-                                    <a href="#" onClick = {() => selectStudent(student)} >
-                                        {student.name}
-                                    </a>
-                                </div>
-                                <button onClick={deleteStudent} className="btn btn-xs btn-danger remove   btn-circle"> x </button>
+                                <a href="#" onClick = {() => selectStudent(student.id)} >
+                                    {student.name}
+                                </a>
+                                <button onClick={()=> deleteStudent(student.id)} className="btn btn-xs btn-danger remove   btn-circle"> x </button>
                             </div>
                         )
                     })
                 }</div>
-        } </div>
+        </div>
     )}
     else {
 

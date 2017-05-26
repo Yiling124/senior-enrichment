@@ -48,9 +48,8 @@ export default class Home extends Component {
     }
 
 
-    selectCampus(e){
-        let campusId = e.id;
-		axios.get(`/campuses/${campusId}`)
+    selectCampus(id){
+		axios.get(`/campuses/${id}`)
 			.then(res => {
 				let campus = res.data;
                 this.setState({selectedCampus: campus},
@@ -86,31 +85,37 @@ export default class Home extends Component {
     }
 
 
-    selectStudent(e){
-        let studentId = e.id;
-		axios.delete(`/students/${studentId}`)
-			.then(res => {
+    selectStudent(id){
+        axios.get(`/students/${id}`)
+        	.then(res => {
 				let student = res.data;
                 this.setState({selectedStudent: student},
                 function () {
-                console.log("delete A student", this.state.selectedStudent);
+                console.log("selectedCampus");
             })
         })
     }
 
 
-    deleteStudent(e){
-        console.log("i want to deleteeeeeet", e)
-        let studentId = e.id;
-        axios.get(`/students/${studentId}`)
-			.then(res => {
-				let student = res.data;
-                this.setState({selectedStudent: student},
-                function () {
-                console.log("*****selectedStudent", this.state.selectedStudent);
-            })
+    deleteStudent(id){
+		axios.delete(`/students/${id}`)
+			.then(()=> {
+                this.setState({
+                addstudentPageSwitch: false,
+                studentPage: true,
+                selectedStudent: {}
+            });
         })
     }
+        // axios.get(`/students/${studentId}`)
+		// 	.then(res => {
+		// 		let student = res.data;
+        //         this.setState({selectedStudent: student},
+        //         function () {
+        //         console.log("*****selectedStudent", this.state.selectedStudent);
+        //     })
+        // })
+
 
     addstudentPage(){
         this.setState({
