@@ -89,6 +89,9 @@ export default class Home extends Component {
 
 
     selectStudent(id){
+        let getOneStudent = axios.get(`/students/${id}`)
+        let getCampusName = axios.get(`campuses/`)
+
         axios.get(`/students/${id}`)
         	.then(res => {
 				let student = res.data;

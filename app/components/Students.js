@@ -15,16 +15,19 @@ const Students = (props) => {
     const handleCampusChange = props.handleCampusChange
 
 
+
     if (!addstudentPageSwitch){
     return (
         <div>
             <button onClick={addstudentPage}  data-action="add" className="btn btn-primary btn-circle pull-right">+</button>
                 <div>{
                     students.map((student) => {
+                        let campusId = student.campusId;
+
                         return (
                             <div>
                                 <a href="#" onClick = {() => selectStudent(student.id)} >
-                                    {student.name}
+                                    {student.name}   {}
                                 </a>
                                 <button onClick={()=> deleteStudent(student.id)} className="btn btn-xs btn-danger remove   btn-circle"> x </button>
                             </div>
