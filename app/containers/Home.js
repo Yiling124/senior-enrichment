@@ -35,6 +35,7 @@ export default class Home extends Component {
         this.handlePhoneChange = this.handlePhoneChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handleCampusChange = this.handleCampusChange.bind(this);
+        this.deleteCampus = this.deleteCampus.bind(this);
     }
 
     componentDidMount() {
@@ -54,16 +55,11 @@ export default class Home extends Component {
 				let campus = res.data;
                 this.setState({selectedCampus: campus},
                 function () {
-                console.log("selectedCampus", this.state.selectedCampus);
+                    console.log("selectedCampus")
+                })
             })
-        })
-        // .then(campusId => {
-        //     axios.get(`/students/${campusId}`)
-        //         .then(res =>{
-        //             let studentList = res.data;
 
-        //         })
-        // })
+
 	}
 
     unselectCampus(){
@@ -94,6 +90,13 @@ export default class Home extends Component {
                 console.log("selectedCampus");
             })
         })
+    }
+
+    deleteCampus(id){
+        axios.delete(`/campuses/${id}`)
+			.then(()=> {
+                console.log('done')
+            });
     }
 
 
@@ -223,6 +226,7 @@ export default class Home extends Component {
                                     <Campuses
                                         campuses = {this.state.campuses}
                                         selectCampus = {this.selectCampus}
+                                        deleteCampus = {this.deleteCampus}
                                     />
                                 }
                             </div>

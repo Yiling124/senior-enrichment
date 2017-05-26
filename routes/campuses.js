@@ -61,15 +61,13 @@ router.put('/:id', function (req, res, next) {
 
 //DELETE - one campus
 router.delete('/:id', function (req, res, next) {
-    Campuses.findOne({
+    Campuses.destroy({
             where: {
                 id: req.params.id
             }
         })
-        .then(function (campus) {
-            if (campus) {
-                campus.stauts(200).destroy({})
-            }
+        .then(function(){
+            res.send(200)
         })
         .catch(next)
 })
