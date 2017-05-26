@@ -8,6 +8,7 @@ import Student from '../components/Student';
 
 
 
+
 export default class Home extends Component {
     constructor() {
         super();
@@ -22,7 +23,8 @@ export default class Home extends Component {
             nameInputValue: "",
             phoneInputValue: "",
             emailInputValue: "",
-            campusInputValue: ""
+            campusInputValue: "",
+            studentsForOneCamp:[]
         }
         this.selectCampus = this.selectCampus.bind(this);
         this.unselectCampus = this.unselectCampus.bind(this);
@@ -50,17 +52,22 @@ export default class Home extends Component {
 
 
     selectCampus(id){
-		axios.get(`/campuses/${id}`)
-			.then(res => {
-				let campus = res.data;
-                this.setState({selectedCampus: campus},
-                function () {
-                    console.log("selectedCampus")
+        let findCampus = axios.get(`/campuses/${id}`);
+        let findStudentsForOneCamp = axios.get('/students',{campusId:id});
+
+        findCampus
+            .then(campus => {
+                findStudentsForOneCamp
+                    .then(students => {
+                        this.setState({
+                        studentPage: true,
+                        studentsForOneCamp: students,
+                        selectedCampus: campus
+                    })
                 })
             })
+    }
 
-
-	}
 
     unselectCampus(){
         this.setState(
@@ -221,7 +228,9 @@ export default class Home extends Component {
 
                             <div>
                                 {this.state.selectedCampus.id ?
-                                    <Campus campus = {this.state.selectedCampus}/>
+                                    <Campus campus = {this.state.selectedCampus}
+                                            students = {this.state.studentsForOneCamp}
+                                    />
                                 :
                                     <Campuses
                                         campuses = {this.state.campuses}
